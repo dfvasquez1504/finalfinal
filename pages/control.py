@@ -1,78 +1,76 @@
-import json
-import time
-import platform
-import streamlit as st
 import paho.mqtt.client as paho
-from PIL import Image
+import time
+import streamlit as st
+import json
+import platform
 
-st.set_page_config(page_title="Control MQTT", page_icon="📡", layout="centered")
+# Muestra la versión de Python junto con detalles adicionales
+st.write("Versión de Python:", platform.python_version())
 
+values = 0.0
+act1="OFF"
 
-st.title("📡 Control MQTT")
-st.caption(f"Versión de Python: {platform.python_version()}")
-
-BROKER = "broker.mqttdashboard.com"   # ¡Ojo! sin 'http://'
-PORT   = 1883
-TOPIC  = "cmyk_s"
-
-# ---------------- MQTT callbacks ----------------
-def on_publish(client, userdata, mid):
-    st.toast("Mensaje publicado ✅", icon="✅")
+def on_publish(client,userdata,result):             #create function for callback
+    print("el dato ha sido publicado \n")
+    pass
 
 def on_message(client, userdata, message):
-    try:
-        payload = message.payload.decode("utf-8")
-    except Exception:
-        payload = str(message.payload)
-    st.info(f"📩 Mensaje recibido en **{message.topic}**: {payload}")
+    global message_received
+    time.sleep(2)
+    message_received=str(message.payload.decode("utf-8"))
+    st.write(message_received)
 
-# ---------------- Cliente (persistente) ----------------
-def get_client():
-    if "mqtt_client" in st.session_state:
-        return st.session_state["mqtt_client"]
-    client = paho.Client(client_id="JUANDA-21github", clean_session=True)
-    client.on_publish = on_publish
-    client.on_message = on_message
-    try:
-        client.connect(BROKER, PORT, keepalive=30)
-        st.session_state["mqtt_client"] = client
-    except Exception as e:
-        st.error(f"No se pudo conectar al broker MQTT: {e}")
-    return client
+        
 
-client = get_client()
 
-st.write("Usa los botones para enviar comandos ON/OFF y el control deslizante para un valor analógico.")
+broker="157.230.214.127"
+port=1883
+client1= paho.Client("GIT-HUB")
+client1.on_message = on_message
 
-col1, col2 = st.columns(2)
 
-with col1:
-    if st.button("🟢 ON", use_container_width=True):
-        if client:
-            payload = json.dumps({"Act1": "ON"})
-            client.publish(TOPIC, payload)
-        else:
-            st.error("Cliente MQTT no disponible.")
 
-with col2:
-    if st.button("🔴 OFF", use_container_width=True):
-        if client:
-            payload = json.dumps({"Act1": "OFF"})
-            client.publish(TOPIC, payload)
-        else:
-            st.error("Cliente MQTT no disponible.")
+st.title("MQTT Control")
 
-st.divider()
+if st.button('ON'):
+    act1="ON"
+    client1= paho.Client("GIT-HUB")                           
+    client1.on_publish = on_publish                          
+    client1.connect(broker,port)  
+    message =json.dumps({"Act1":act1})
+    ret= client1.publish("cmqtt_s", message)
+ 
+    #client1.subscribe("Sensores")
+    
+    
+else:
+    st.write('')
 
-value = st.slider("Selecciona el valor analógico", 0.0, 100.0, 50.0)
-st.write(f"Valor: **{value:.1f}**")
+if st.button('OFF'):
+    act1="OFF"
+    client1= paho.Client("GIT-HUB")                           
+    client1.on_publish = on_publish                          
+    client1.connect(broker,port)  
+    message =json.dumps({"Act1":act1})
+    ret= client1.publish("cmqtt_s", message)
+  
+    
+else:
+    st.write('')
 
-if st.button("📤 Enviar valor analógico", type="primary"):
-    if client:
-        payload = json.dumps({"Analog": float(value)})
-        client.publish(TOPIC, payload)
-    else:
-        st.error("Cliente MQTT no disponible.")
+values = st.slider('Selecciona el rango de valores',0.0, 100.0)
+st.write('Values:', values)
 
-st.markdown("---")
-st.caption(f"Broker: `{BROKER}` • Topic: `{TOPIC}` • Puerto: `{PORT}`")
+if st.button('Enviar valor analógico'):
+    client1= paho.Client("GIT-HUB")                           
+    client1.on_publish = on_publish                          
+    client1.connect(broker,port)   
+    message =json.dumps({"Analog": float(values)})
+    ret= client1.publish("cmqtt_a", message)
+    
+ 
+else:
+    st.write('')
+
+
+
