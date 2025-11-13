@@ -23,7 +23,7 @@ def on_message(client, userdata, message):
 
 broker="broker.mqttdashboard.com"
 port=1883
-  client1= paho.Client("Final_Si")
+client1= paho.Client("Final_Si")
 client1.on_message = on_message
 
 
@@ -31,9 +31,6 @@ client1.on_message = on_message
 st.title("INTERFACES MULTIMODALES")
 st.subheader("CONTROL POR VOZ")
 
-image = Image.open('voice_ctrl.jpg')
-
-st.image(image, width=200)
 
 
 
