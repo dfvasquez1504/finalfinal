@@ -7,8 +7,6 @@ from PIL import Image
 
 st.set_page_config(page_title="Control MQTT", page_icon="📡", layout="centered")
 
-# Imagen principal
-st.image("meme.png", use_container_width=True)
 
 st.title("📡 Control MQTT")
 st.caption(f"Versión de Python: {platform.python_version()}")
