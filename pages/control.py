@@ -30,15 +30,15 @@ client1.on_message = on_message
 
 
 
-st.title("MQTT Control")
+st.title("Invernadero")
 
 if st.button('ON'):
     act1="ON"
-    client1= paho.Client("GIT-HUB")                           
+    client1= paho.Client("Daniel-Git")                           
     client1.on_publish = on_publish                          
     client1.connect(broker,port)  
     message =json.dumps({"Act1":act1})
-    ret= client1.publish("cmqtt_s", message)
+    ret= client1.publish("Invernadero_Daniel", message)
  
     #client1.subscribe("Sensores")
     
