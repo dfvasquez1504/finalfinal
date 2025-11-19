@@ -28,8 +28,8 @@ client1.on_message = on_message
 
 
 
-st.title("INTERFACES MULTIMODALES")
-st.subheader("CONTROL POR VOZ")
+st.title("EcoSense 🌱")
+st.subheader("Control de Escotilla ")
 
 
 
