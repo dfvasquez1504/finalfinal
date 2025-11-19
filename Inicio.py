@@ -5,8 +5,8 @@ import time
 
 # Configuración de la página
 st.set_page_config(
-    page_title="Lector de Sensor MQTT",
-    page_icon="📡",
+    page_title="Datos en Tiempo Real de EcoSense ",
+    page_icon="🌱",
     layout="centered"
 )
 
@@ -95,7 +95,7 @@ if st.button('🔄 Obtener Datos del Sensor', use_container_width=True):
 # Mostrar resultados
 if st.session_state.sensor_data:
     st.divider()
-    st.subheader('📊 Datos Recibidos')
+    st.subheader('📊 Datos Recibidos del invernadero')
     
     data = st.session_state.sensor_data
     
