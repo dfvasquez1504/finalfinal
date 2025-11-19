@@ -65,7 +65,7 @@ with st.sidebar:
                               help='Identificador único para este cliente')
 
 # Título
-st.title('📡 Lector de Sensor MQTT')
+st.title('Datos Invernadero 🌱')
 
 # Información al inicio
 with st.expander('ℹ️ Información', expanded=False):
